@@ -50,8 +50,10 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if hasattr(event, 'reply_token') is False:
-        return  # Do nothing if we can not reply
+    if event.reply_token == '00000000000000000000000000000000':
+        # The invalid token happen in URL Verifying of webhook api
+        # And it trigger Exception so we pass
+        return
 
     line_bot_api.reply_message(
         event.reply_token,
