@@ -1,1 +1,1 @@
-server: gunicorn app:app --access-logfile -
+server: gunicorn app:app --log-file -
