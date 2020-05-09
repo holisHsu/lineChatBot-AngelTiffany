@@ -1,4 +1,5 @@
 
+import os
 import logging
 
 from flask import Flask, request, abort
@@ -17,8 +18,8 @@ from linebot.models import (
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
-CHANNEL_ACCESS_TOKEN = 'GPG2p6cOelYZLsnEf4zE6TthrttjtwRgTbF1wKZ9bgQhdyIUVUOJnPNpqiAtS/pqWR7/GBYeGmIKaPZNBkVX2Cj3QMgAqlrYZdwhaVYWh63S1IrZmgdQnpOI+El/xG+ucqkHaqrLuPb5p08ZqoH5WgdB04t89/1O/w1cDnyilFU='
-CHANNEL_SECRET = '551414750789da2305b7381d404a40d8'
+CHANNEL_ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN', '')
+CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET', '')
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
