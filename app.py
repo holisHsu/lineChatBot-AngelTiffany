@@ -4,7 +4,8 @@ import logging
 
 from flask import Flask, request, abort
 
-from line_bot.handler import handler
+from bot.handler import handler
+from linebot.exceptions import InvalidSignatureError
 
 
 logger = logging.getLogger(__name__)
