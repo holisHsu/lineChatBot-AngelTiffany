@@ -29,3 +29,18 @@ def test_get_report_type_GetHomeNight(arrival_home_morning_text):
 
 def test_get_report_type_None(normal_chat_text):
     assert get_types_form_text(normal_chat_text) == []
+
+
+def test_report_type_translation():
+
+    def _check_report_type_and_translation_content(report_type, translation):
+        assert ReportType.translate_to_chinese(report_type) == translation
+
+    type_and_translation_check_arr = [
+        (ReportType.ArrivalHomeMorning, '放假回家'),
+        (ReportType.BodyTemp, '體溫'),
+        (ReportType.BusStatistic, '專車統計'),
+        (ReportType.GetHomeNight, '晚上回報(可能和晚上體溫一起)'),
+    ]
+    for element in type_and_translation_check_arr:
+        _check_report_type_and_translation_content(element[0], element[1])

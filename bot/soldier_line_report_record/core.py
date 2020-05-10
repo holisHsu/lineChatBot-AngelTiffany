@@ -17,6 +17,7 @@ from enum import Enum
 from linebot.models import TextSendMessage
 
 from bot.setting import line_bot_api
+from bot.helper import make_reply_content, random_chat
 
 
 class ReportType(Enum):
@@ -24,6 +25,17 @@ class ReportType(Enum):
     BodyTemp = 'BodyTemp'
     BusStatistic = 'BusStatistic'
     GetHomeNight = 'GetHomeNight'
+
+    @staticmethod
+    def translate_to_chinese(enum_type):
+        translation_map = {
+            ReportType.ArrivalHomeMorning: '放假回家',
+            ReportType.BodyTemp: '體溫',
+            ReportType.BusStatistic: '專車統計',
+            ReportType.GetHomeNight: '晚上回報(可能和晚上體溫一起)',
+        }
+
+        return translation_map.get(enum_type, 'N/A')
 
 
 class ReportTypeKeyWords(Enum):
@@ -40,11 +52,14 @@ def handle_soldier_line_report(message_event):
 
     # Currently bot should reply the type and remind user it have the function
     if report_types:
-        report_types = ' 或 '.join(map(lambda enum: enum.value, report_types))
-        reply_text = f"我覺得回報類型是 {report_types}"
+        reply_types = ' 或 '.join(map(lambda enum: ReportType.translate_to_chinese(enum),
+                                     report_types))
+        reply_text = f"我覺得回報類型是 {reply_types}"
     else:
-        reply_text = _make_reply_content(["是說，你可以把班群的回報貼給我",
-                                          "我會告訴你是哪種回報喔"])
+        reply_text = make_reply_content([random_chat(),
+                                         "\n",
+                                         "是說，你可以把班群的回報貼給我",
+                                         "我會告訴你是哪種回報喔"])
 
     line_bot_api.reply_message(message_event.reply_token,
                                TextSendMessage(text=reply_text))
@@ -62,19 +77,15 @@ def get_types_form_text(text):
 
         return None
 
-    report_types = (
+    report_type_names = (
         'ArrivalHomeMorning', 'BodyTemp',
         'BusStatistic', 'GetHomeNight'
     )
     possible_report_types = []
 
-    for type_name in report_types:
+    for type_name in report_type_names:
         report_type = _check_and_get_report_type(type_name)
         if report_type:
             possible_report_types.append(report_type)
 
     return possible_report_types
-
-
-def _make_reply_content(text_arr):
-    return '\n'.join(text_arr)
