@@ -25,3 +25,7 @@ def test_get_report_type_BusStatistic(bus_statistic_text):
 def test_get_report_type_GetHomeNight(arrival_home_morning_text):
     assert ReportType.GetHomeNight \
         in get_types_form_text(arrival_home_morning_text)
+
+
+def test_get_report_type_None(normal_chat_text):
+    assert get_types_form_text(normal_chat_text) == []

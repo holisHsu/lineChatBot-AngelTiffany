@@ -111,3 +111,8 @@ def bus_statistic_text():
     129 自行/自行
     130 自行/自行
     """
+
+
+@pytest.fixture(scope='module')
+def normal_chat_text():
+    return "阿今天要去哪裡吃飯？"
