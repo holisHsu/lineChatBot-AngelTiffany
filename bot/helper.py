@@ -19,4 +19,3 @@ def random_chat():
         '要什麼福利，拿表現來換!'
     ]
     return random.choice(candidates)
-
